@@ -83,6 +83,10 @@ public class ObjectCache<T> {
 		}
 	}
 
+	public int size() {
+		return map.size();
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -92,8 +96,14 @@ public class ObjectCache<T> {
 		return builder.toString();
 	}
 
-	
-	
+	public float calculateQuality() {
+		float totalItems = map.size();
+		float totalRequests = 0f;
+		for (Entry<String, ObjectContainer<T>> e : map.entrySet())
+			totalRequests += e.getValue().getTimesRequired();
+		return (totalRequests / totalItems) / (100 / totalRequests);
+	}
+
 	public int getSizeToGarbageCollect() {
 		return sizeToGarbageCollect;
 	}
@@ -133,8 +143,6 @@ public class ObjectCache<T> {
 
 	}
 }
-
-
 
 class ValuesComparator<T> implements Comparator<String> {
 
